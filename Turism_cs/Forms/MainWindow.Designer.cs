@@ -51,6 +51,9 @@
             this.dataGridViewExcursii.Name = "dataGridViewExcursii";
             this.dataGridViewExcursii.Size = new System.Drawing.Size(775, 325);
             this.dataGridViewExcursii.TabIndex = 0;
+            this.dataGridViewExcursii.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DataGridViewExcursii_CellFormatting);
+            this.dataGridViewExcursii.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewExcursii_CellValueChanged);
+            this.dataGridViewExcursii.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.DataGridViewExcursii_RowPrePaint);
             // 
             // buttonSearch
             // 

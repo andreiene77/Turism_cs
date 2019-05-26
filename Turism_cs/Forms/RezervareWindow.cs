@@ -7,18 +7,14 @@ namespace Turism_cs.Forms
 {
     public partial class RezervareWindow : Form
     {
-        public RezervareWindow(Client client)
+        public RezervareWindow(ClientRmi client)
         {
             InitializeComponent();
             Client = client;
         }
 
         public Excursie Ex { get; set; }
-        private Client Client { get; }
-
-        private void TextBoxBilete_TextChanged(object sender, EventArgs e)
-        {
-        }
+        private ClientRmi Client { get; }
 
         private void ButtonRezerva_Click(object sender, EventArgs e)
         {
@@ -28,7 +24,7 @@ namespace Turism_cs.Forms
             try
             {
                 Client.RequestRezervare(Ex, nume, telefon, nrBilete);
-                Close();
+                BeginInvoke(new Action(Close));
             }
             catch (Exception exception)
             {

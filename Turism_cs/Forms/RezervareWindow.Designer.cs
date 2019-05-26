@@ -90,7 +90,6 @@
             this.textBoxBilete.Name = "textBoxBilete";
             this.textBoxBilete.Size = new System.Drawing.Size(250, 31);
             this.textBoxBilete.TabIndex = 5;
-            this.textBoxBilete.TextChanged += new System.EventHandler(this.TextBoxBilete_TextChanged);
             // 
             // buttonRezerva
             // 
@@ -103,7 +102,7 @@
             this.buttonRezerva.UseVisualStyleBackColor = true;
             this.buttonRezerva.Click += new System.EventHandler(this.ButtonRezerva_Click);
             // 
-            // Rezervare
+            // RezervareWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -115,7 +114,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "Rezervare";
+            this.Name = "RezervareWindow";
             this.Text = "Booking";
             this.ResumeLayout(false);
             this.PerformLayout();

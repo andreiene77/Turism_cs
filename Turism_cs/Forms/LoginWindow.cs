@@ -6,14 +6,13 @@ namespace Turism_cs.Forms
 {
     public partial class LoginForm : Form
     {
-        public LoginForm(Client client)
+        private ClientRmi Client { get; }
+        public LoginForm(ClientRmi client)
         {
             InitializeComponent();
             Client = client;
             Client.LoggedIn += Client_LoggedIn;
         }
-
-        private Client Client { get; }
 
         private void Client_LoggedIn(object sender, EventArgs e)
         {

@@ -11,7 +11,7 @@ namespace Turism_cs.Forms
     {
         private BindingList<Excursie> excursiiFiltered;
 
-        public SearchWindow(Client client)
+        public SearchWindow(ClientRmi client)
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
@@ -27,20 +27,14 @@ namespace Turism_cs.Forms
             UpdateDataGrid();
         }
 
-        public Client Client { get; set; }
+        private ClientRmi Client { get; }
 
-        private void Client_ExcursiiFilteredListChanged(object sender, EventArgs e)
-        {
-            Invoke(new Action(UpdateExcursiiFiltered));
-        }
+        private void Client_ExcursiiFilteredListChanged(object sender, EventArgs e) => UpdateExcursiiFiltered();
 
         private void UpdateExcursiiFiltered()
         {
-            lock (this)
-            {
-                excursiiFiltered = new BindingList<Excursie>(Client.ExcursiiFiltered);
-                dataGridViewExcursii.DataSource = excursiiFiltered;
-            }
+            excursiiFiltered = new BindingList<Excursie>(Client.ExcursiiFiltered);
+            dataGridViewExcursii.DataSource = excursiiFiltered;
         }
 
         private void UpdateDataGrid()
@@ -66,7 +60,7 @@ namespace Turism_cs.Forms
                 oraFinish = new TimeSpan(23, 59, 59);
             }
 
-            Client.RequestGetFilteredExcursii(obiectiv, oraStart, oraFinish);
+            Client.RequestFilteredExcursii(obiectiv, oraStart, oraFinish);
         }
 
         private void TextBoxObiectiv_TextChanged(object sender, EventArgs e)

@@ -11,47 +11,45 @@ namespace Turism_cs.Forms
     {
         private BindingList<Excursie> excursiiList;
 
-        public MainWindow(Client client)
+        public MainWindow(ClientRmi client)
         {
             InitializeComponent();
             Client = client;
             Client.LoggedOut += Client_LoggedOut;
             Client.ExcursiiListChanged += Client_ExcursiiListChanged;
-
-            excursiiList = new BindingList<Excursie>();
-            dataGridViewExcursii.DataSource = excursiiList;
-            dataGridViewExcursii.Columns["id"].Visible = false;
-            dataGridViewExcursii.RowPrePaint += DataGridViewExcursii_RowPrePaint;
-            dataGridViewExcursii.CellValueChanged += DataGridViewExcursii_CellValueChanged;
-
-            Client.RequestGetExcursii();
+            Client.RequestExcursii();
         }
 
-        private Client Client { get; }
+        private ClientRmi Client { get; }
 
         private void Client_ExcursiiListChanged(object sender, EventArgs e)
         {
-            Invoke(new Action(UpdateExcursiiList));
+            if (InvokeRequired)
+            {
+                Invoke(new Action(UpdateExcursiiList));
+            }
+            else
+            {
+                UpdateExcursiiList();
+            }
         }
 
         private void UpdateExcursiiList()
         {
             excursiiList = new BindingList<Excursie>(Client.Excursii);
             dataGridViewExcursii.DataSource = excursiiList;
+            dataGridViewExcursii.Update();
         }
 
-        private void Client_LoggedOut(object sender, EventArgs e)
-        {
-            BeginInvoke(new Action(Close));
-        }
+        private void Client_LoggedOut(object sender, EventArgs e) => BeginInvoke(new Action(Close));
 
         private void ButtonSearch_Click(object sender, EventArgs e) =>
             new SearchWindow(Client).Show();
 
         private void ButtonBook_Click(object sender, EventArgs e)
         {
-            var selectedExcursie = (Excursie) dataGridViewExcursii.CurrentRow?.DataBoundItem;
-            var rezervareWindow = new RezervareWindow(Client) {Ex = selectedExcursie};
+            var selectedExcursie = (Excursie)dataGridViewExcursii.CurrentRow?.DataBoundItem;
+            var rezervareWindow = new RezervareWindow(Client) { Ex = selectedExcursie };
             rezervareWindow.Show();
         }
 
@@ -68,9 +66,13 @@ namespace Turism_cs.Forms
                     row.DefaultCellStyle.ForeColor = Color.Red;
         }
 
-        private void ButtonLogout_Click(object sender, EventArgs e)
+        private void ButtonLogout_Click(object sender, EventArgs e) => Client.RequestLogout();
+
+        private void DataGridViewExcursii_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            Client.RequestLogout();
+            foreach (DataGridViewRow row in dataGridViewExcursii.Rows)
+                if (Convert.ToInt32(row.Cells[5].Value) == 0)
+                    row.DefaultCellStyle.ForeColor = Color.Red;
         }
     }
 }
